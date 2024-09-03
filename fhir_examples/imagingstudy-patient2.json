@@ -1,0 +1,68 @@
+{
+  "resourceType": "ImagingStudy",
+  "status": "available",
+  "id": "xraystudy789",
+  "subject": {
+    "reference": "Patient/2"
+  },
+  "started": "2024-08-15T09:45:30+03:00",
+  "series": [
+    {
+      "uid": "series2",
+      "started": "2024-08-15T09:45:30+03:00",
+      "modality": {
+        "coding": [
+          {
+            "system": "https://dicom.nema.org/resources/ontology/DCM",
+            "code": "XR"
+          }
+        ]
+      },
+      "performer": [
+        {
+          "actor": {
+            "reference": "Organization/4",
+            "type": "Organization"
+          }
+        },
+        {
+          "actor": {
+            "reference": "Practitioner/3",
+            "type": "Practitioner"
+          }
+        }
+      ],
+      "bodySite": {
+        "concept": {
+          "coding": [
+            {
+              "system": "https://snomed.info/sct",
+              "code": "44400009",
+              "display": "X-Ray of Chest"
+            }
+          ]
+        }
+      },
+      "instance": [
+        {
+          "uid": "instance301",
+          "sopClass": {
+            "system": "https://dicom.nema.org/resources/ontology/DCM",
+            "code": "XR01",
+            "display": "X-Ray Chest"
+          },
+          "title": "X-Ray Chest Image 1"
+        },
+        {
+          "uid": "instance302",
+          "sopClass": {
+            "system": "https://dicom.nema.org/resources/ontology/DCM",
+            "code": "XR02",
+            "display": "X-Ray Chest"
+          },
+          "title": "X-Ray Chest Image 2"
+        }
+      ]
+    }
+  ]
+}

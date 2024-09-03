@@ -10,13 +10,12 @@ import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.w3._1999.xhtml.Li;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class PatientResourceProvider implements IResourceProvider {
@@ -41,18 +40,10 @@ public class PatientResourceProvider implements IResourceProvider {
 	@Search
 	public List<Patient> searchPatientByPseudonym(@RequiredParam(name = "pseudonym") UuidType pseudonym, RequestDetails theRequestDetails) {
 		SearchParameterMap params = new SearchParameterMap();
-		List<Patient> returnList = new ArrayList<Patient>();
-		List<Patient> patientList = patientDao.searchForResources(params, theRequestDetails);
-		for (Patient patient : patientList) {
-			List<Extension> nonModExts = patient.getExtension();
-			for (Extension ext : nonModExts) {
-				log.info("{} ::: {}", ext.getValue().toString(), pseudonym.getValue());
-				if (Objects.equals(ext.getValue().primitiveValue(), pseudonym.getValue())){
-					returnList.add(patient);
-				}
-			}
-		}
-		return returnList;
+		return patientDao.searchForResources(params, theRequestDetails).stream()
+				.filter(patient -> patient.getExtension().stream()
+						.anyMatch(ext -> Objects.equals(ext.getValue().primitiveValue(), pseudonym.getValue())))
+				.collect(Collectors.toList());
 	}
 
 
