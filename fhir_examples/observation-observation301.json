@@ -1,8 +1,7 @@
 {
   "resourceType": "Observation",
-  "id": "observation301",
   "subject": {
-    "reference": "urn:uuid:patient123"
+    "reference": "Patient/1"
   },
   "status": "available",
   "code": {

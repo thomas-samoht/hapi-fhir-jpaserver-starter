@@ -1,9 +1,8 @@
 {
   "resourceType": "ImagingStudy",
-  "id": "mristudy123",
   "status": "available",
   "subject": {
-    "reference": "urn:uuid:patient123"
+    "reference": "Patient/1"
   },
   "series": [
     {

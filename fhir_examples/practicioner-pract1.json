@@ -1,6 +1,5 @@
 {
   "resourceType": "Practitioner",
-  "id": "pract1",
   "identifier": [
     {
       "use": "official",

@@ -1,6 +1,5 @@
 {
   "resourceType": "Patient",
-  "id": "patient456",
   "identifier": [
     {
       "system": "http://clinic.org/patients",

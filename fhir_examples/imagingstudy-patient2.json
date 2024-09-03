@@ -1,7 +1,6 @@
 {
   "resourceType": "ImagingStudy",
   "status": "available",
-  "id": "xraystudy789",
   "subject": {
     "reference": "Patient/2"
   },

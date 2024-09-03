@@ -36,8 +36,6 @@ public class ImagingStudyResourceProvider implements IResourceProvider {
 		PatientResourceProvider patientResourceProvider = new PatientResourceProvider(patientDao);
 		List<Patient> patientList = patientResourceProvider.searchPatientByPseudonym(pseudonym, theRequestDetails);
 
-		log.info(patientList.toString());
-
 		return patientList.stream()
 			.map(patient -> {
 				SearchParameterMap paramMap = new SearchParameterMap();

@@ -1,9 +1,8 @@
 {
   "resourceType": "ImagingStudy",
   "status": "available",
-  "id": "ctstudy646",
   "subject": {
-    "reference": "Patient/patient123"
+    "reference": "Patient/1"
   },
   "started": "2011-01-01T11:01:20+03:00",
   "series": [
