@@ -6,13 +6,18 @@ import ca.uhn.fhir.rest.annotation.*;
 import ca.uhn.fhir.rest.api.MethodOutcome;
 import ca.uhn.fhir.rest.api.server.RequestDetails;
 import ca.uhn.fhir.rest.server.IResourceProvider;
-import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r5.model.*;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Resource provider contains one or more methods which have been annotated with special annotations indicating
+ * which RESTful operation that method supports.
+ */
 @Component
 public class PatientResourceProvider implements IResourceProvider {
 
@@ -22,6 +27,15 @@ public class PatientResourceProvider implements IResourceProvider {
 		this.patientDao = patientDao;
 	}
 
+	/**
+	 * Create method to create a patient
+	 * usage: POST to /fhir/Patient with JSON body with Patient resource
+	 *
+	 * @param thePatient
+	 *    Resource of the to be created patient
+	 * @return
+	 *    DAO create method outcome
+	 */
 	@Create
 	public MethodOutcome createPatient(@ResourceParam Patient thePatient, RequestDetails theRequestDetails) {
 		String uuid = UUID.randomUUID().toString();
@@ -32,15 +46,21 @@ public class PatientResourceProvider implements IResourceProvider {
 		return patientDao.create(thePatient, theRequestDetails);
 	}
 
-	@Search
-	public List<Patient> searchPatientByPseudonym(@RequiredParam(name = "pseudonym") UuidType pseudonym, RequestDetails theRequestDetails) {
+	/**
+	 * Method to find patients with pseudonym
+	 *
+	 * @param pseudonym
+	 * UuidType of pseudonym
+	 * @return
+	 *    List of patients with pseudonym
+	 */
+	List<Patient> searchPatientByPseudonym(UuidType pseudonym, RequestDetails theRequestDetails) {
 		SearchParameterMap params = new SearchParameterMap();
 		return patientDao.searchForResources(params, theRequestDetails).stream()
 				.filter(patient -> patient.getExtension().stream()
 						.anyMatch(ext -> Objects.equals(ext.getValue().primitiveValue(), pseudonym.getValue())))
 				.collect(Collectors.toList());
 	}
-
 
 	@Override
 	public Class<Patient> getResourceType() {
