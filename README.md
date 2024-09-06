@@ -93,7 +93,7 @@ curl -X GET http://localhost:8080/fhir/Patient/3
 }
 ```
 
-Before you request the timeline service ensure your endpoint is registered and 
+Before you request the timeline service ensure your endpoint is registered in the [adressing](https://github.com/minvws/nl-irealisatie-zmodules-addressing-register) and 
 the [pseudonym-exchange-service](https://github.com/minvws/nl-irealisatie-zmodules-pseudonym-service) knows your provider-id.
 To find your provider-id, look in the [settings file](src/main/resources/application.yaml).
 
