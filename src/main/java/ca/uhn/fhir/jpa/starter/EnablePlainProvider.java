@@ -9,8 +9,8 @@ import org.hl7.fhir.r5.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExampleServlet extends RestfulServer {
-	public ExampleServlet(IFhirResourceDao<Patient> patientDao,
+public class EnablePlainProvider extends RestfulServer {
+	public EnablePlainProvider(IFhirResourceDao<Patient> patientDao,
 								 IFhirResourceDao<Organization> orgDao,
 								 IFhirResourceDao<Practitioner> pracDao,
 								 IFhirResourceDao<ImagingStudy> imageDao
