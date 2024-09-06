@@ -1,7 +1,7 @@
 {
   "resourceType": "Observation",
   "subject": {
-    "reference": "Patient/1"
+    "reference": "Patient/3"
   },
   "status": "available",
   "code": {

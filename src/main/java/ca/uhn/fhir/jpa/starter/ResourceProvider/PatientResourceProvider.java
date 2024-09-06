@@ -7,6 +7,8 @@ import ca.uhn.fhir.rest.api.MethodOutcome;
 import ca.uhn.fhir.rest.api.server.RequestDetails;
 import ca.uhn.fhir.rest.server.IResourceProvider;
 import org.hl7.fhir.r5.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
  */
 @Component
 public class PatientResourceProvider implements IResourceProvider {
+
+	private static final Logger log = LoggerFactory.getLogger(PatientResourceProvider.class);
 
 	private final IFhirResourceDao<Patient> patientDao;
 

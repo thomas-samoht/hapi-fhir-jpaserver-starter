@@ -5,9 +5,7 @@ import ca.uhn.fhir.jpa.searchparam.SearchParameterMap;
 import ca.uhn.fhir.jpa.starter.AppProperties;
 import ca.uhn.fhir.rest.annotation.RequiredParam;
 import ca.uhn.fhir.rest.annotation.Search;
-import ca.uhn.fhir.rest.api.server.IBundleProvider;
 import ca.uhn.fhir.rest.api.server.RequestDetails;
-import ca.uhn.fhir.rest.param.ReferenceParam;
 import ca.uhn.fhir.rest.server.IResourceProvider;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -20,9 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * Resource provider contains one or more methods which have been annotated with special annotations indicating
@@ -66,18 +64,30 @@ public class ImagingStudyResourceProvider implements IResourceProvider {
 			PatientResourceProvider patientResourceProvider = new PatientResourceProvider(patientDao);
 			// Get patients by pseudonym
 			List<Patient> patientList = patientResourceProvider.searchPatientByPseudonym(newPseudonym, theRequestDetails);
+			List<ImagingStudy> allStudies = imagingStudyDao.searchForResources(new SearchParameterMap(), theRequestDetails);
 
-			// Retrieve and return imagingStudies that have patient set as reference
-			return patientList.stream()
-				.map(patient -> {
-					SearchParameterMap paramMap = new SearchParameterMap();
-					paramMap.add(ImagingStudy.SP_PATIENT, new ReferenceParam(patient.getIdElement().getValue()));
-					IBundleProvider results = imagingStudyDao.search(paramMap, theRequestDetails);
-					return results != null ? results.getResources(0, results.size()) : Collections.emptyList();
-				})
-				.flatMap(Collection::stream)
-				.map(resource -> (ImagingStudy) resource)
-				.collect(Collectors.toList());
+			List<ImagingStudy> filteredstudies = new ArrayList<>();
+			for (Patient patient : patientList) {
+				log.info(patient.getIdElement().getValue()); // Patient/3/_history/1
+				// remove everything after 3 with regex
+				Matcher matcher = Pattern.compile("^(Patient/\\d+)").matcher(patient.getIdElement().getValue());
+				String result = matcher.find() ? matcher.group(1) : "";
+				log.info(result); // Patient/3
+
+				for (ImagingStudy imagingStudy : allStudies) {
+					if (imagingStudy.getSubject().getReference().equals(result)) {
+						log.info("ImagingStudy {}", imagingStudy.getIdElement().getValue());
+						filteredstudies.add(imagingStudy);
+					}
+				}
+			}
+
+			for (ImagingStudy imagingStudy : filteredstudies) {
+				log.info("Imagestudy references: {}", imagingStudy.getSubject().getReference());
+			}
+			// Filter studies that reference patients in patientList
+			return filteredstudies;
+
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return new ArrayList<>();
@@ -93,7 +103,7 @@ public class ImagingStudyResourceProvider implements IResourceProvider {
 	 * @return
 	 *    Pseudonym that is returned by exchange service
 	 */
-	private UuidType exchangePseudonym(UuidType oldPseudonym) throws IOException {
+	private UuidType exchangePseudonym(UuidType oldPseudonym) {
 		String sourcePseudonym = oldPseudonym.getValue();
 		String endpoint = appProperties.getPseudonymExchangeService().getEndpoint();
 		String targetProviderId = appProperties.getPseudonymExchangeService().getTargetProviderId();

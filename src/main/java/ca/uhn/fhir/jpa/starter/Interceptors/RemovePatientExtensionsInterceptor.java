@@ -3,13 +3,17 @@ package ca.uhn.fhir.jpa.starter.Interceptors;
 import ca.uhn.fhir.interceptor.api.Hook;
 import ca.uhn.fhir.interceptor.api.Interceptor;
 import ca.uhn.fhir.interceptor.api.Pointcut;
-import org.hl7.fhir.BundleEntry;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Patient;
 
 import java.util.Collections;
 
+/**
+ * This class intercepts outgoing responses and removes patient extensions since they contain pseudonyms and
+ * pseudonyms are only supposed to be used internally.
+ * This class removes the extension from Patient resources and Bundle resources that contain Patients.
+ */
 @Interceptor
 public class RemovePatientExtensionsInterceptor {
 

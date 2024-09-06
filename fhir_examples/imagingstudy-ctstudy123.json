@@ -20,14 +20,16 @@
       "performer": [
         {
           "actor": {
-            "reference": "Organization/4",
-            "type": "Organization"
+            "reference": "Organization/1",
+            "type": "Organization",
+            "display": "My organization"
           }
         },
         {
           "actor": {
-            "reference": "Practitioner/3",
-            "type": "Practitioner"
+            "reference": "Practitioner/2",
+            "type": "Practitioner",
+            "display": "My practitioner"
           }
         }
       ],
