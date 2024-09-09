@@ -226,54 +226,6 @@
         "method": "POST",
         "url": "ImagingStudy"
       }
-    },
-    {
-      "resource": {
-        "resourceType": "ImagingStudy",
-        "status": "available",
-        "subject": {
-          "reference": "Patient/3"
-        },
-        "series": [
-          {
-            "uid": "series1",
-            "modality": {
-              "coding": [
-                {
-                  "system": "http://dicom.nema.org/resources/ontology/DCM",
-                  "code": "CT"
-                }
-              ]
-            },
-            "bodySite": {
-              "concept": {
-                "coding": [
-                  {
-                    "system": "http://snomed.info/sct",
-                    "code": "66019005",
-                    "display": "MRI of Spine"
-                  }
-                ]
-              }
-            },
-            "instance": [
-              {
-                "uid": "instance301",
-                "sopClass": {
-                  "system": "http://dicom.nema.org/resources/ontology/DCM",
-                  "code": "MRI01",
-                  "display": "MRI Spine"
-                },
-                "title": "MRI Spine Image 1"
-              }
-            ]
-          }
-        ]
-      },
-      "request": {
-        "method": "POST",
-        "url": "ImagingStudy"
-      }
     }
   ]
 }

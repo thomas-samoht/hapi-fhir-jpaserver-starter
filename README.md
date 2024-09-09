@@ -93,9 +93,35 @@ curl -X GET http://localhost:8080/fhir/Patient/3
 }
 ```
 
-Before you request the timeline service ensure your endpoint is registered and 
+Before you request the timeline service ensure your endpoint is registered in the [address](https://github.com/minvws/nl-irealisatie-zmodules-addressing-register) and 
 the [pseudonym-exchange-service](https://github.com/minvws/nl-irealisatie-zmodules-pseudonym-service) knows your provider-id.
 To find your provider-id, look in the [settings file](src/main/resources/application.yaml).
+
+In the address DB you should have a entry that sets the address endpoint to: http://host.docker.internal:8080/fhir
+And to set up the provider in the pseudonym service follow these steps:
+1. do the following curl request in the terminal
+```curl
+curl -X 'POST' \
+  'http://localhost:8504/register' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "provider_id": "MY_HAPI",
+  "bsn_hash": "2b826afa1c71f571a007dad61ce9fb9b63a24a328aa4ac009484a198ff565c51"
+}'
+```
+2. Copy generated pseudonym
+3. Open database editor to the `hapi` database
+4. Go to table `hfj_res_ver`
+5. Edit the extension in the `patient` resource entry
+6. Replace the patient's extensions UUID with the copied pseudonym
+
+Finally test whether this is all setup correctly:
+1. Do curl request:
+```curl
+curl 'http://host.docker.internal:8080/fhir/ImagingStudy/_search?pseudonym=677b33c7-30e0-4fe1-a740-87fd73c4dfaf'
+```
+2. Check if [timeline service](http://localhost:8500/) works as well
 
 ### Setting properties
 In the [application.yaml](src/main/resources/application.yaml) file, you can configure most server and HAPI settings, enable or disable components, and set custom resource providers and interceptors.  
